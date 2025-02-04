@@ -30,6 +30,9 @@ export default async function CardWrapper() {
   );
 }
 
+// This is an exportable React component that can be used in other parts of the application.
+// Title, value, and type are passed as props to the component.
+// The types for tile = string, value = number | string, and type have types because of TS.
 export function Card({
   title,
   value,

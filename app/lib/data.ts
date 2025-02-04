@@ -9,6 +9,10 @@ import {
 } from './definitions';
 import { formatCurrency } from './utils';
 
+// This line is required to load the .env file
+// process.env.POSTGRES_URL looks for the POSTGRES_URL variable in the .env file
+// ! is used to tell TypeScript that the variable is not null. if it is null, it will throw an error.
+// { ssl: 'require' } is used to require SSL connection to the database. used in services like Heroku or AWS.
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
 export async function fetchRevenue() {
@@ -68,8 +72,14 @@ export async function fetchCardData() {
       invoiceStatusPromise,
     ]);
 
-    const numberOfInvoices = Number(data[0].count ?? '0');
-    const numberOfCustomers = Number(data[1].count ?? '0');
+
+    console.log(data); // Debugging step
+    console.log(data[0]); // Check what is inside
+    console.log(data[0][0]); // Check first row
+    console.log(data[0][0].count); // Check final value
+
+    const numberOfInvoices = Number(data[0][0].count ?? '0');
+    const numberOfCustomers = Number(data[1][0].count ?? '0');
     const totalPaidInvoices = formatCurrency(data[2][0].paid ?? '0');
     const totalPendingInvoices = formatCurrency(data[2][0].pending ?? '0');
 
